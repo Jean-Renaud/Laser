@@ -16,8 +16,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-
      ui->id->setVisible(false);
      ui->btnAjoutClasse->setCursor(Qt::PointingHandCursor);
      ui->btnAjoutCouleur->setCursor(Qt::PointingHandCursor);
@@ -54,8 +52,6 @@ MainWindow::MainWindow(QWidget *parent) :
      ui->angleBas->setEnabled(false);
      ui->angleHaut->setEnabled(false);
      ui->angleForm->setEnabled(false);
-
-
 }
 
 MainWindow::~MainWindow()
@@ -91,8 +87,6 @@ void MainWindow::chargerCouleur()
 
 void MainWindow::chargerPuissance()
 {
-    // PUISSANCE
-
         QSqlQueryModel * codeBdd3 = new QSqlQueryModel();
         QSqlQuery * puissance = new QSqlQuery;
         puissance->prepare("SELECT Nom FROM Puissance");
@@ -109,8 +103,6 @@ void MainWindow::chargerPuissance()
 
 void MainWindow::chargerClasse()
 {
-    //CLASSE LASER
-
         QSqlQueryModel * codeBdd4 = new QSqlQueryModel();
         QSqlQuery * classe = new QSqlQuery;
         classe->prepare("SELECT Nom FROM ClasseLaser");
@@ -150,18 +142,10 @@ void MainWindow::comptage()
     {
         ui->comptageBDD->setText(compter.value(0).toString());
     }
-
-
-
 }
-
-
-
 
 void MainWindow::chargerIndice()
 {
-    //INDICE
-
         QSqlQueryModel * codeBdd2 = new QSqlQueryModel();
         QSqlQuery * indice = new QSqlQuery;
         indice->prepare("SELECT Nom FROM Indice");
@@ -174,13 +158,10 @@ void MainWindow::chargerIndice()
             codeBdd2->setQuery(*indice);
             ui->enregistrerIndice->setModel(codeBdd2);
         }
-
 }
-
 
 void MainWindow::on_enregistrerEnBdd_clicked()
 {
-
     Laser *laser = new Laser(
                              ui->id->text(),
                              ui->enregistrerNom->text(),
@@ -202,7 +183,6 @@ void MainWindow::on_enregistrerEnBdd_clicked()
 
 void MainWindow::on_tableView_activated(const QModelIndex &index)
 {
-
     QString renvoyerDansChampTexte = ui->tableView->model()->data(index).toString();
     ui->tableView->verticalHeader()->setVisible(false);
     QSqlQuery cliqueSurListe;
@@ -228,8 +208,6 @@ void MainWindow::on_tableView_activated(const QModelIndex &index)
     cliqueSurListe.bindValue(":alimentation",renvoyerDansChampTexte);
     cliqueSurListe.bindValue(":indice", renvoyerDansChampTexte);
     cliqueSurListe.bindValue(":couleur", renvoyerDansChampTexte);
-
-
     cliqueSurListe.exec();
 
     while(cliqueSurListe.next())
@@ -325,7 +303,6 @@ void MainWindow::on_validModif_clicked()
     if(ui->modifID->text().isEmpty())
     {
         QMessageBox::critical(this,tr("Champ vide"),tr("Vous avez laissé un champ vide."));
-
     }
   else if(this->bdd->miseAJourLaser(*mettreAjourLaser))
     {
@@ -356,7 +333,6 @@ void MainWindow::on_validModif_clicked()
     }
 }
 
-
 void MainWindow::on_btnAjoutCouleur_clicked()
 {
     QString ajouterCouleur = ui->ajoutCouleur->text();
@@ -367,7 +343,6 @@ void MainWindow::on_btnAjoutCouleur_clicked()
     if(!ajout.exec())
     {
         QMessageBox::critical(this,tr("Ajout échoué"),tr("L'ajout de la couleur a échouée"));
-
     }
     else
     {
@@ -375,22 +350,17 @@ void MainWindow::on_btnAjoutCouleur_clicked()
         QMessageBox::information(this,tr("Ajout réussi"),tr("L'ajout a été effectué avec succès."));
         ui->ajoutCouleur->clear();
     }
-
-
-
 }
 
 void MainWindow::on_btnAjoutIndice_clicked()
 {
     QString ajouterIndice = ui->ajoutIndice->text();
     QSqlQuery ajout;
-
     ajout.prepare("INSERT INTO Indice (Nom) VALUES (:Nom)");
     ajout.bindValue(":Nom", ajouterIndice);
     if(!ajout.exec())
     {
         QMessageBox::critical(this,tr("Ajout échoué"),tr("L'ajout de l'indice a échoué"));
-
     }
     else
     {
@@ -398,20 +368,17 @@ void MainWindow::on_btnAjoutIndice_clicked()
         QMessageBox::information(this,tr("Ajout réussi"),tr("L'ajout a été effectué avec succès."));
         ui->ajoutIndice->clear();
     }
-
 }
 
 void MainWindow::on_btnAjoutPuissance_clicked()
 {
     QString ajouterPuissance = ui->ajoutPuissance->text();
     QSqlQuery ajout;
-
     ajout.prepare("INSERT INTO Puissance (Nom) VALUES (:Nom)");
     ajout.bindValue(":Nom", ajouterPuissance);
     if(!ajout.exec())
     {
         QMessageBox::critical(this,tr("Ajout échoué"),tr("L'ajout de la puissance a échouée"));
-
     }
     else
     {
@@ -419,14 +386,12 @@ void MainWindow::on_btnAjoutPuissance_clicked()
         QMessageBox::information(this,tr("Ajout réussi"),tr("L'ajout a été effectué avec succès."));
         ui->ajoutPuissance->clear();
     }
-
 }
 
 void MainWindow::on_btnAjoutClasse_clicked()
 {
     QString ajouterClasse = ui->ajoutClasse->text();
     QSqlQuery ajout;
-
     ajout.prepare("INSERT INTO ClasseLaser (Nom) VALUES (:Nom)");
     ajout.bindValue(":Nom", ajouterClasse);
     if(!ajout.exec())
@@ -446,13 +411,11 @@ void MainWindow::on_btnAjoutAngle_clicked()
 {
     QString ajouterClasse = ui->ajoutAngle->text();
     QSqlQuery ajout;
-
     ajout.prepare("INSERT INTO Angles (Nom) VALUES (:Nom)");
     ajout.bindValue(":Nom", ajouterClasse);
     if(!ajout.exec())
     {
         QMessageBox::critical(this,tr("Ajout échoué"),tr("L'ajout de l'angle d'ouverture a échouée"));
-
     }
     else
     {
@@ -461,7 +424,6 @@ void MainWindow::on_btnAjoutAngle_clicked()
         ui->ajoutAngle->clear();
     }
 }
-
 
 void MainWindow::on_tabWidget_tabBarClicked()
 {
@@ -489,7 +451,6 @@ void MainWindow::on_btnSupprimerCouleur_clicked()
         this->ui->tableauSupprimer->setModel(actualiserListe);
         QMessageBox::information(this, "Information", "La puissance a correctement été supprimée.");
     }
-
 }
 
 void MainWindow::on_btnSupprimerIndice_clicked()
@@ -507,7 +468,6 @@ void MainWindow::on_btnSupprimerIndice_clicked()
         this->ui->tableauProtection->setModel(actualiserListe);
         QMessageBox::information(this, "Information", "La puissance a correctement été supprimée.");
     }
-
 }
 
 void MainWindow::on_btnSupprimerPuissance_clicked()
@@ -554,13 +514,11 @@ void MainWindow::on_tableauSupprimer_activated(const QModelIndex &index)
     cliqueSurListe.bindValue(":id", renvoyerDansChampTexte);
     cliqueSurListe.bindValue(":nom", renvoyerDansChampTexte);
     cliqueSurListe.exec();
-
     while(cliqueSurListe.next())
     {
         ui->idCouleurSuppr->setEnabled(false);
         ui->idCouleurSuppr->setText(cliqueSurListe.value(0).toString());
         ui->nomCouleurSuppr->setText(cliqueSurListe.value(1).toString());
-
     }
 }
 
@@ -612,7 +570,6 @@ void MainWindow::on_btnRechercherPuissance_clicked()
     }
 }
 
-
 void MainWindow::on_btnRechercherIndice_clicked()
 {
     QSqlQueryModel * modal6 = new QSqlQueryModel();
@@ -631,7 +588,6 @@ void MainWindow::on_btnRechercherIndice_clicked()
 
 void MainWindow::on_tableauClasse_activated(const QModelIndex &index)
 {
-
     QString renvoyerDansChampTexte = ui->tableauClasse->model()->data(index).toString();
     ui->tableauClasse->verticalHeader()->setVisible(false);
     QSqlQuery cliqueSurListe;
@@ -640,7 +596,6 @@ void MainWindow::on_tableauClasse_activated(const QModelIndex &index)
     cliqueSurListe.bindValue(":id", renvoyerDansChampTexte);
     cliqueSurListe.bindValue(":nom", renvoyerDansChampTexte);
     cliqueSurListe.exec();
-
     while(cliqueSurListe.next())
     {
         ui->idClasseSuppr->setEnabled(false);
@@ -648,7 +603,6 @@ void MainWindow::on_tableauClasse_activated(const QModelIndex &index)
         ui->nomClasseSuppr->setText(cliqueSurListe.value(1).toString());
 
     }
-
 }
 
 void MainWindow::on_tableauPuissance_activated(const QModelIndex &index)
@@ -661,7 +615,6 @@ void MainWindow::on_tableauPuissance_activated(const QModelIndex &index)
     cliqueSurListe.bindValue(":id", renvoyerDansChampTexte);
     cliqueSurListe.bindValue(":nom", renvoyerDansChampTexte);
     cliqueSurListe.exec();
-
     while(cliqueSurListe.next())
     {
         ui->idPuissanceSuppr->setEnabled(false);
@@ -681,7 +634,6 @@ void MainWindow::on_tableauProtection_activated(const QModelIndex &index)
     cliqueSurListe.bindValue(":id", renvoyerDansChampTexte);
     cliqueSurListe.bindValue(":nom", renvoyerDansChampTexte);
     cliqueSurListe.exec();
-
     while(cliqueSurListe.next())
     {
         ui->idIndiceSuppr->setEnabled(false);
@@ -690,8 +642,6 @@ void MainWindow::on_tableauProtection_activated(const QModelIndex &index)
 
     }
 }
-
-
 
 void MainWindow::on_pushButton_3_clicked()
 {
@@ -708,7 +658,6 @@ void MainWindow::on_pushButton_3_clicked()
         ui->tableauAngle->setModel(modal6);
         ui->tableauAngle->verticalHeader()->setVisible(false);
     }
-
 }
 
 void MainWindow::on_tableauAngle_activated(const QModelIndex &index)
@@ -721,7 +670,6 @@ void MainWindow::on_tableauAngle_activated(const QModelIndex &index)
     cliqueSurListe.bindValue(":id", renvoyerDansChampTexte);
     cliqueSurListe.bindValue(":nom", renvoyerDansChampTexte);
     cliqueSurListe.exec();
-
     while(cliqueSurListe.next())
     {
         ui->idAngleSuppr->setEnabled(false);
@@ -738,18 +686,15 @@ void MainWindow::on_modifierCouleur_clicked()
     if(ui->idCouleurSuppr->text().isEmpty())
     {
         QMessageBox::critical(this,tr("Champ vide"),tr("Vous avez laissé un champ vide."));
-
     }
   else
     {
         QSqlQuery maj;
-
         maj.prepare("UPDATE Couleur SET Nom = :nom WHERE id = :id");
         maj.bindValue(":id", id);
         maj.bindValue(":nom", MettreAJourOption);
         if(maj.exec())
         {
-
         QSqlQueryModel * rafraichirListeCouleur = new QSqlQueryModel();
         ui->tableauSupprimer->verticalHeader()->setVisible(false);
         clearFocus();
@@ -758,13 +703,10 @@ void MainWindow::on_modifierCouleur_clicked()
         rafraichirListeCouleur->setQuery(rafraichirListe);
         this->ui->tableauSupprimer->setModel(rafraichirListeCouleur);
         QMessageBox::information(this, "Modification réussie", "L'option a été mise à jour avec succès.");
-
-        //On réinitialise les champs de saisis.
         ui->idCouleurSuppr->clear();
         ui->nomCouleurSuppr->clear();
         }
     }
-
 }
 
 void MainWindow::on_modifierClasse_clicked()
@@ -774,18 +716,15 @@ void MainWindow::on_modifierClasse_clicked()
     if(ui->idClasseSuppr->text().isEmpty())
     {
         QMessageBox::critical(this,tr("Champ vide"),tr("Vous avez laissé un champ vide."));
-
     }
   else
     {
         QSqlQuery maj;
-
         maj.prepare("UPDATE ClasseLaser SET Nom = :nom WHERE id = :id");
         maj.bindValue(":id", id);
         maj.bindValue(":nom", MettreAJourOption);
         if(maj.exec())
         {
-
         QSqlQueryModel * rafraichirListeCouleur = new QSqlQueryModel();
         ui->tableauClasse->verticalHeader()->setVisible(false);
         clearFocus();
@@ -809,18 +748,15 @@ void MainWindow::on_modifierPuissance_clicked()
     if(ui->idPuissanceSuppr->text().isEmpty())
     {
         QMessageBox::critical(this,tr("Champ vide"),tr("Vous avez laissé un champ vide."));
-
     }
   else
     {
         QSqlQuery maj;
-
         maj.prepare("UPDATE puissance SET Nom = :nom WHERE id = :id");
         maj.bindValue(":id", id);
         maj.bindValue(":nom", MettreAJourOption);
         if(maj.exec())
         {
-
         QSqlQueryModel * rafraichirListeCouleur = new QSqlQueryModel();
         ui->tableauPuissance->verticalHeader()->setVisible(false);
         clearFocus();
@@ -829,8 +765,6 @@ void MainWindow::on_modifierPuissance_clicked()
         rafraichirListeCouleur->setQuery(rafraichirListe);
         this->ui->tableauPuissance->setModel(rafraichirListeCouleur);
         QMessageBox::information(this, "Modification réussie", "L'option a été mise à jour avec succès.");
-
-        //On réinitialise les champs de saisis.
         ui->idPuissanceSuppr->clear();
         ui->nomPuissanceSuppr->clear();
         }
@@ -844,18 +778,15 @@ void MainWindow::on_modifierIndice_clicked()
     if(ui->idIndiceSuppr->text().isEmpty())
     {
         QMessageBox::critical(this,tr("Champ vide"),tr("Vous avez laissé un champ vide."));
-
     }
   else
     {
         QSqlQuery maj;
-
         maj.prepare("UPDATE Indice SET Nom = :nom WHERE id = :id");
         maj.bindValue(":id", id);
         maj.bindValue(":nom", MettreAJourOption);
         if(maj.exec())
         {
-
         QSqlQueryModel * rafraichirListeCouleur = new QSqlQueryModel();
         ui->tableauProtection->verticalHeader()->setVisible(false);
         clearFocus();
@@ -864,8 +795,6 @@ void MainWindow::on_modifierIndice_clicked()
         rafraichirListeCouleur->setQuery(rafraichirListe);
         this->ui->tableauProtection->setModel(rafraichirListeCouleur);
         QMessageBox::information(this, "Modification réussie", "L'option a été mise à jour avec succès.");
-
-        //On réinitialise les champs de saisis.
         ui->idIndiceSuppr->clear();
         ui->nomIndiceSuppr->clear();
         }
@@ -879,18 +808,15 @@ void MainWindow::on_modifierAngle_clicked()
     if(ui->idAngleSuppr->text().isEmpty())
     {
         QMessageBox::critical(this,tr("Champ vide"),tr("Vous avez laissé un champ vide."));
-
     }
   else
     {
         QSqlQuery maj;
-
         maj.prepare("UPDATE Angles SET Nom = :nom WHERE id = :id");
         maj.bindValue(":id", id);
         maj.bindValue(":nom", MettreAJourOption);
         if(maj.exec())
         {
-
         QSqlQueryModel * rafraichirListeCouleur = new QSqlQueryModel();
         ui->tableauAngle->verticalHeader()->setVisible(false);
         clearFocus();
@@ -899,8 +825,6 @@ void MainWindow::on_modifierAngle_clicked()
         rafraichirListeCouleur->setQuery(rafraichirListe);
         this->ui->tableauAngle->setModel(rafraichirListeCouleur);
         QMessageBox::information(this, "Modification réussie", "L'option a été mise à jour avec succès.");
-
-        //On réinitialise les champs de saisis.
         ui->idAngleSuppr->clear();
         ui->nomAngleSuppr->clear();
         }
@@ -969,10 +893,8 @@ void MainWindow::on_pushButton_4_clicked()
     double racine_deux = oppose * oppose;
     double calcul = racine_un + racine_deux;
     qreal resultatHypotenuse = sqrt(calcul);
-
    // CALCUL DE L'HYPOTENUSE
     ui->hypotenuse->setText(QString::number(resultatHypotenuse));
-
     //CALCUL TANGLE
     double PI = 3.14159265;
     double angleBas = atan(oppose / adjacent) * 180 / PI;
@@ -988,30 +910,20 @@ void MainWindow::on_pushButton_4_clicked()
     else if(zer > "16" && zer <= "26")
     {
         ui->angleForm->setText("20");
-
     }
     else if(zer > "26" && zer <= "36")
     {
         ui->angleForm->setText("30");
-
     }
     else if(zer > "36" && zer <= "50")
     {
         ui->angleForm->setText("40");
-
     }
     else if(zer > "50")
     {
         ui->angleForm->setText("80");
-
     }
-
-
-
-
 }
-
-
 
 void MainWindow::on_pushButton_clicked()
 {
@@ -1019,15 +931,12 @@ void MainWindow::on_pushButton_clicked()
     QString inclinaison = ui->inclinaisonForm->text();
     QString angle = ui->comboAngle->currentText(); //Résultat final du calcul qui nous donne l'angle d'ouverture an haut du triangle.
     QString debutLigne = ui->debutLigne->text();
-
     QString finLigne = ui->finForm->text();
     angle.mid(0,2);
-
     ui->debutLigne->setText(QString::number(oppose.toFloat() * (qTan(qDegreesToRadians(inclinaison.toFloat() - angle.toFloat() / 2)))));
     ui->finForm->setText(QString::number(oppose.toFloat() * (qTan(qDegreesToRadians(inclinaison.toFloat() + angle.toFloat() / 2)))));
     ui->pointForm->setText(QString::number(oppose.toFloat() * (qTan(qDegreesToRadians(inclinaison.toFloat())))));
     ui->ligneForm->setText(QString::number(finLigne.toFloat() - debutLigne.toFloat())); // Cosinus à l'hypoténuse*/
-
 }
 
 void MainWindow::on_pushButton_5_clicked()
@@ -1040,14 +949,9 @@ void MainWindow::on_pushButton_5_clicked()
     QString degre = ui->degre->text();
     QString resultatAngle = ui->angleForm->text();
 
-
-
-
-
 if(lumiere == "Atelier normal")
 {
     QSqlQueryModel * modal18 = new QSqlQueryModel();
-
     QSqlQuery resultat;
     resultat.prepare("SELECT Nom, Classe, Puissance, Indice FROM Laser WHERE NOT Puissance = '1MW' AND NOT Puissance='3MW' AND NOT Puissance='30MW' AND NOT Puissance='40MW' AND "
                      "Type = :type AND Angle = :angle AND Alimentation = :alimentation AND Couleur = :couleur LIMIT 10");
@@ -1056,9 +960,6 @@ if(lumiere == "Atelier normal")
     resultat.bindValue(":angle", resultatAngle + degre);
     resultat.bindValue(":alimentation", alim);
     resultat.bindValue(":couleur", couleur);
-
-
-
     if(resultat.exec())
     {
         modal18->setQuery(resultat);
@@ -1108,11 +1009,7 @@ else if(lumiere == "Très sombre")
 
 else if(lumiere == "Très lumineux")
 {
-
-
     QSqlQueryModel * modal19 = new QSqlQueryModel();
-
-
     QSqlQuery resultat;
     resultat.prepare("SELECT * FROM Laser WHERE NOT Puissance = '1MW' AND NOT Puissance='3MW' AND NOT Puissance='5MW' AND Type = :type "
                      "AND Focalisable = :focalisable AND Angle = :angle AND Alimentation = :alimentation");
@@ -1120,7 +1017,6 @@ else if(lumiere == "Très lumineux")
     resultat.bindValue(":focalisable", focal);
     resultat.bindValue(":angle", resultatAngle);
     resultat.bindValue(":alimentation", alim);
-
     if(resultat.exec())
     {
         modal19->setQuery(resultat);
